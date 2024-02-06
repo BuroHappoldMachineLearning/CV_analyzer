@@ -81,8 +81,6 @@ def get_pdf_text(filepath: str,
                  poppler_bin_path=r'C:\Users\alombardi\Desktop\Software\poppler-23.11.0\Library\bin'
                  ) -> PdfText:
     import PyPDF2
-    import re
-    import numpy as np
     import cv2
     import pytesseract
     pytesseract.pytesseract.tesseract_cmd = r"C:\Users\alombardi\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
