@@ -107,6 +107,7 @@ class CandidateApplication(PdfText):
     mentions_tensorflow: bool = False
     mentions_csharp: bool = False
     mentions_computervision: bool = False
+    buzzword_count : int = 0
     rating : float = False
 
 
@@ -249,12 +250,19 @@ def get_all_candidate_applications(folder_path: str) -> list[CandidateApplicatio
                     cand_app.answer3 = answers[3]
                     cand_app.answer4 = answers[4]
                     cand_app.answer5 = answers[5]
-                    
-                cand_app.mentions_pytorch = "pytorch" in application_text.all_text().lower()
-                cand_app.mentions_tensorflow = "tensorflow" in application_text.all_text().lower()
-                cand_app.mentions_csharp = "c#" in application_text.all_text().lower()
-                cand_app.mentions_computervision = "computer vision" in application_text.all_text().lower()
                 
+                all_application_text = application_text.all_text()
+                
+                # Check for nice-to-have skills in the application
+                cand_app.mentions_pytorch = "pytorch" in all_application_text.lower()
+                cand_app.mentions_tensorflow = "tensorflow" in all_application_text.lower()
+                cand_app.mentions_csharp = "c#" in all_application_text.lower()
+                cand_app.mentions_computervision = "computer vision" in all_application_text.lower()
+                
+                # Check for buzzwords in the application
+                for buzzword in useful_texts.buzzwords:
+                    if buzzword in all_application_text.lower():
+                        cand_app.buzzword_count += 1
             
             possible_cv_file = all_files[i + 1]
             if (i < len(all_files) - 1) and get_id_from_filepath(possible_cv_file) == candidate_id:
@@ -265,12 +273,21 @@ def get_all_candidate_applications(folder_path: str) -> list[CandidateApplicatio
                 print(f"Found CV for candidate {candidate_name}")
                 cv_text = get_pdf_text(possible_cv_file)
                 
-                cand_app.mentions_pytorch |= "pytorch" in cv_text.all_text().lower()
-                cand_app.mentions_tensorflow |= "tensorflow" in cv_text.all_text().lower()
-                cand_app.mentions_csharp |= "c#" in cv_text.all_text().lower()
-                cand_app.mentions_computervision |= "computer vision" in cv_text.all_text().lower()
+                all_cv_text = cv_text.all_text()
+                
+                # Check for nice-to-have skills in the cv
+                cand_app.mentions_pytorch |= "pytorch" in all_cv_text.lower()
+                cand_app.mentions_tensorflow |= "tensorflow" in all_cv_text.lower()
+                cand_app.mentions_csharp |= "c#" in all_cv_text.lower()
+                cand_app.mentions_computervision |= "computer vision" in all_cv_text.lower()
+                
+                # Check for buzzwords in the cv
+                for buzzword in useful_texts.buzzwords:
+                    if buzzword in all_cv_text.lower():
+                        cand_app.buzzword_count += 1
 
             cand_app.rating = cand_app.mentions_pytorch + cand_app.mentions_tensorflow + cand_app.mentions_csharp + cand_app.mentions_computervision
+            cand_app.rating -= cand_app.buzzword_count
             result.append(cand_app)
             
     return result
