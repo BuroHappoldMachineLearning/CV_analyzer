@@ -15,6 +15,12 @@ If you want to train it, follow these steps:
 pip install -r requirements.txt
 ```
 
+For issues installing Pytorch with cuda, try running:  
+
+```
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu113
+```
+
 2. train a detector
 ```bash
 cd Detector
