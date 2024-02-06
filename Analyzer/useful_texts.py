@@ -5,6 +5,8 @@ question3 = "3. Describe what algorithmic complexity is. (50-150 words) - Feel f
 question4 = "4. Please explain what \"Variable scoping\" is, making an example of how it works in one or more programming languages that you know, possibly including Python. (50-150 words) (essential to the job)"
 question5 = "5. Please describe what overfitting means in data science/ML. (50-150 words) (essential to the job)"
 
+all_questions = [question1, question2, question3, question4, question5]
+all_questions_initial_text = [q[5:20] for q in all_questions]
 
 # Quality-indicative terms
 ai_terms : list[str] = ["paramount", "crucial", "essential", "critical", "vital", "indispensable", "integral", "imperative", "ensuring"]

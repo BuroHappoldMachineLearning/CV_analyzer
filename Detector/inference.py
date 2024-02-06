@@ -37,8 +37,11 @@ def get_prediction(model, input_ids, attention_mask):
 
 
 def main():
+    print("Running the inference script...")
     # Load the fine-tuned model from the saved state dict
-    model_path = "best_model.pt"
+    import os
+    model_path = os.path.abspath("Detector/PR_model_MSE.pt")
+    
     tokenizer, model = load_model(model_path)
 
     # Get the test sentence from the file
