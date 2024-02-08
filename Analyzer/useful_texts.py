@@ -11,3 +11,4 @@ all_questions_initial_text = [q[5:20] for q in all_questions]
 # Quality-indicative terms
 ai_terms : list[str] = ["paramount", "crucial", "essential", "critical", "vital", "indispensable", "integral", "imperative", "ensuring"]
 buzzwords: list[str] = ["cutting-edge", "state-of-the-art", "innovative", "revolutionary", "pioneering", "groundbreaking", "leading-edge", "sophisticated", "high-tech", "high-end", "high-quality", "high-performance", "high-impact", "high-value", "high-level", "high-precision"]
+nice_to_haves: list[str] = ["pytorch", "tensorflow", "c#", "computer vision", "cad", "azure", "aws", "git"]
