@@ -1,2 +1,0 @@
-test_sample1
-test_sample2
