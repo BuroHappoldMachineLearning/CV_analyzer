@@ -4,6 +4,8 @@ from dataclasses import dataclass
 import pathlib
 import os
 from typing import Optional
+
+from rich.progress import track
 from file_processing import get_name_from_filepath
 from pdf_processing import PdfText, read_pdf
 from text_processing import get_answers_from_text
@@ -89,9 +91,11 @@ class CandidateApplication:
 # %%
 def get_all_candidate_applications(folder_path: str) -> list[CandidateApplication]:
     pdfs_per_id = get_pdfs_per_id(folder_path)
+    print(f"Found {len(pdfs_per_id)} candidates with applications.")
+    
     result_dict: defaultdict[int, CandidateApplication] = defaultdict(CandidateApplication)
 
-    for candidate_id, pdfs_paths in pdfs_per_id.items():
+    for candidate_id, pdfs_paths in track(pdfs_per_id.items()):
         print(f"Candidate {candidate_id} has {len(pdfs_paths)} pdfs.")
         cand_app: CandidateApplication = result_dict[candidate_id]
         cand_app.candidate_id = candidate_id
@@ -158,6 +162,7 @@ def get_all_candidate_applications(folder_path: str) -> list[CandidateApplicatio
             
             cand_app.set_rating() # necessary to serialize dataclass, can't use @property decorator.
     
+    print(f"Processed {len(result_dict)} candidate applications.")
     return list(result_dict.values())
 
 
@@ -165,8 +170,8 @@ def get_all_candidate_applications(folder_path: str) -> list[CandidateApplicatio
 # %%
 
 if __name__ == "__main__":
-    root = r"C:\Users\alombardi\Buro Happold\Design & Technology - R&D Wishlist\00488_Machine Learning reprise\Funding\InnovateUK\KTP project\Candidates\Candidates applications upto 5th February 2024"
-    root = r"C:\Users\alombardi\Buro Happold\Design & Technology - R&D Wishlist\00488_Machine Learning reprise\Funding\InnovateUK\KTP project\Candidates\_subset"
+    root = r"C:\Users\alombardi\Buro Happold\Design & Technology - R&D Wishlist\00488_Machine Learning reprise\Funding\InnovateUK\KTP project\Candidates\Upto 20240211 closing date"
+    #root = r"C:\Users\alombardi\Buro Happold\Design & Technology - R&D Wishlist\00488_Machine Learning reprise\Funding\InnovateUK\KTP project\Candidates\_subset"
 
     all_candidate_apps: list[CandidateApplication] = get_all_candidate_applications(root)
 
